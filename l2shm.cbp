@@ -35,7 +35,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename=".Rbuildignore" />
+		<Unit filename=".gitattributes" />
+		<Unit filename=".gitignore" />
 		<Unit filename="DESCRIPTION" />
+		<Unit filename="LICENSE" />
 		<Unit filename="NAMESPACE" />
 		<Unit filename="R/collapse.R" />
 		<Unit filename="R/gd.R" />
