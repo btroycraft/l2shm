@@ -7,7 +7,9 @@ U <- {
   u.scores(data)
 }
 
-y <- heatkern.emp.gd(U, .02, 10, maxiter = 100)
+start <- rand.par.list(10, nrow(U), .02)
+
+y <- heatkern.emp.gd(U, tmin = .02, groups = 10, maxiter = 20)
 y <- heatkern.emp.gd(U, .02, 10, maxiter = 1000, start=y); y
 
 y_max <- heatkern.emp.sgd(U, .02, 4, 10, maxiter = 10)

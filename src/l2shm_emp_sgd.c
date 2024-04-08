@@ -1,7 +1,6 @@
 #include <math.h>
 #include <cblas.h>
 #include <float.h>
-
 #include <stdio.h>
 
 #include "l2shm.h"
