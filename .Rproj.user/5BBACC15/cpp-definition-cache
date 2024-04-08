@@ -1,0 +1,212 @@
+[
+    {
+        "file": "D:/repos/l2shm/src/l2shm.h",
+        "file_last_write": 1711677637.0,
+        "definitions": [
+            {
+                "usr": "c:l2shm.h@82@macro@L2SHM",
+                "kind": 9,
+                "parent_name": "",
+                "name": "L2SHM",
+                "file": "D:/repos/l2shm/src/l2shm.h",
+                "line": 8,
+                "column": 9,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_R.h",
+        "file_last_write": 1711677254.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_emp_gd.c",
+        "file_last_write": 1712305188.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_emp_sgd.c",
+        "file_last_write": 1712305649.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_gd.h",
+        "file_last_write": 1712304888.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_heatkernel.c",
+        "file_last_write": 1712266429.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_heatkernel.h",
+        "file_last_write": 1711678681.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_proj_obj.c",
+        "file_last_write": 1712262497.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_random_R.c",
+        "file_last_write": 1712307405.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_random_R.h",
+        "file_last_write": 1712282750.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+        "file_last_write": 1712304449.0,
+        "definitions": [
+            {
+                "usr": "c:l2shm_sgd.c@8@macro@R_NO_REMAP",
+                "kind": 9,
+                "parent_name": "",
+                "name": "R_NO_REMAP",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 1,
+                "column": 9,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern(SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 14,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern_test",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern_test(SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 24,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern_dx",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern_dx(SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 33,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern_dx_test",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern_dx_test(SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 42,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern_dt",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern_dt(SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 51,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern_dt_test",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern_dt_test(SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 60,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern_combn",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern_combn(SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 69,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern_emp_gd",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern_emp_gd(SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 80,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern_emp_sgd",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern_emp_sgd(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 112,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@heatkern_proj_gd",
+                "kind": 6,
+                "parent_name": "",
+                "name": "heatkern_proj_gd(SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 147,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@R_init_l2shm",
+                "kind": 6,
+                "parent_name": "",
+                "name": "R_init_l2shm(DllInfo *)",
+                "file": "D:/repos/l2shm/src/l2shm_sgd.c",
+                "line": 201,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_trans.c",
+        "file_last_write": 1712172871.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "D:/repos/l2shm/src/l2shm_trans.h",
+        "file_last_write": 1712180618.0,
+        "definitions": [],
+        "hidden": false
+    }
+]

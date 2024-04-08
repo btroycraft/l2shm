@@ -1,0 +1,17 @@
+useDynLib(l2shm, .registration = TRUE)
+
+importFrom("stats", "rnorm")
+
+export(
+    heatkern.proj.gd,
+    heatkern.emp.gd,
+    heatkern.proj.sgd,
+    heatkern.emp.sgd,
+    u.scores,
+    heatkern,
+    heatkern.test,
+    heatkern.dx,
+    heatkern.dx.test,
+    heatkern.dt,
+    heatkern.dt.test,
+    heatkern.combn)
