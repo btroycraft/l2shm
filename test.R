@@ -62,7 +62,8 @@ heat.kern.test(.1, 10, 100)
   l2shm.nrm2.sq(par0)
   l2shm.nrm2.sq.diff(par0, par)
 
-  par_sub <- l2shm.gd.proj(par, maxiter = 100, groups = 5)
+  par_sub <- l2shm.gd.proj(par, maxiter = 1000, groups = 5)
+  l2shm.gd.proj(par, maxiter = 1000, par = par_sub)
   l2shm.obj.proj(par_sub, par)
   l2shm.nrm2.sq.diff(par_sub, par0)
 
