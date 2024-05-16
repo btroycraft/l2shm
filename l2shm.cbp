@@ -43,32 +43,54 @@
 		<Unit filename="NAMESPACE" />
 		<Unit filename="R/collapse.R" />
 		<Unit filename="R/gd.R" />
+		<Unit filename="R/heat.R" />
+		<Unit filename="R/mixture.R" />
+		<Unit filename="R/random.R" />
 		<Unit filename="R/uscores.R" />
 		<Unit filename="man/hello.Rd" />
 		<Unit filename="src/Makevars" />
 		<Unit filename="src/l2shm.h" />
 		<Unit filename="src/l2shm_R.h" />
-		<Unit filename="src/l2shm_emp_gd.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/l2shm_emp_sgd.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="src/l2shm_gd.h" />
+		<Unit filename="src/l2shm_gd_R.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/l2shm_gd_R.h" />
+		<Unit filename="src/l2shm_gd_emp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/l2shm_gd_proj.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/l2shm_heatkernel.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/l2shm_heatkernel.h" />
-		<Unit filename="src/l2shm_proj_obj.c">
+		<Unit filename="src/l2shm_heatkernel_R" />
+		<Unit filename="src/l2shm_heatkernel_R.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/l2shm_heatkernel_R.h" />
+		<Unit filename="src/l2shm_init_R.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/l2shm_init_R.h" />
+		<Unit filename="src/l2shm_mixture.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/l2shm_mixture.h" />
+		<Unit filename="src/l2shm_mixture_R.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/l2shm_mixture_R.h" />
+		<Unit filename="src/l2shm_random.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/l2shm_random.h" />
 		<Unit filename="src/l2shm_random_R.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/l2shm_random_R.h" />
-		<Unit filename="src/l2shm_sgd.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="src/l2shm_trans.c">
 			<Option compilerVar="CC" />
 		</Unit>

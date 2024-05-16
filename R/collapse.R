@@ -12,9 +12,3 @@ collapse.to.number <- function(x){
   stopifnot(length(x) == 1)
   return(x[1])
 }
-
-collapse.to.<- function(x){
-  x <- collapse.to.element(x)
-  stopifnot(is.atomic(x) && is.numeric(x))
-  return(x)
-}

@@ -3,15 +3,16 @@ useDynLib(l2shm, .registration = TRUE)
 importFrom("stats", "rnorm")
 
 export(
-    heatkern.proj.gd,
-    heatkern.emp.gd,
-    heatkern.proj.sgd,
-    heatkern.emp.sgd,
+    l2shm.gd.emp,
+    l2shm.gd.proj,
     u.scores,
-    heatkern,
-    heatkern.test,
-    heatkern.dx,
-    heatkern.dx.test,
-    heatkern.dt,
-    heatkern.dt.test,
-    heatkern.combn)
+    heat.kern,
+    heat.kern.dx,
+    heat.kern.dt,
+    rheat.sph,
+    rheat.sph.mix,
+    l2shm.obj.emp,
+    l2shm.obj.proj,
+    l2shm.nrm2.sq,
+    l2shm.nrm2.sq.diff
+)

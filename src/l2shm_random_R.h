@@ -2,13 +2,20 @@
 #define L2SHM_RANDOM_R_H_
 
 
-#include <Rmath.h>
+#include "l2shm_R.h"
 
 
-#include "l2shm.h"
+SEXP L2SHM_R(rand_heat_sph)(
+    SEXP b_sxp,
+    SEXP mu_sxp, SEXP T_sxp,
+    SEXP res_sxp
+);
 
-
-void L2SHM(select_batch)(double *restrict, size_t, size_t, size_t, double *restrict, size_t *restrict);
+SEXP L2SHM_R(rand_heat_sph_mix)(
+    SEXP b_sxp,
+    SEXP mu_sxp, SEXP T_sxp, SEXP Alpha_sxp,
+    SEXP res_sxp
+);
 
 
 #endif // L2SHM_RANDOM_R_H_

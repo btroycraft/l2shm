@@ -1,14 +1,22 @@
-#include <stdlib.h>
 #include <math.h>
+
 
 #include "l2shm.h"
 #include "l2shm_heatkernel.h"
 
 
-static inline double L2SHM(power_int)(double, size_t);
+static inline double L2SHM(power_integer)
+(
+    double a, size_t power
+);
 
 
-double L2SHM(heatkernel)(double x, double t, size_t dim, double terms)
+double L2SHM(heat_kernel)
+(
+    double x, double t,
+    size_t dim,
+    double terms
+)
 {
     double d = dim;
     double dm4 = d-4., dm2i2 = 2./(d-2.);
@@ -19,7 +27,7 @@ double L2SHM(heatkernel)(double x, double t, size_t dim, double terms)
 
     double p1 = 0., p2 = 1.;
     double ct = 1., cm = 1.;
-    double mult = L2SHM(power_int)(t, dim-1);
+    double mult = L2SHM(power_integer)(t, dim-1);
 
     for(double ind = 1.; ind < terms; ++ind)
     {
@@ -47,7 +55,12 @@ double L2SHM(heatkernel)(double x, double t, size_t dim, double terms)
     return out;
 }
 
-double L2SHM(heatkernel_nox)(double t, size_t dim, double terms)
+double L2SHM(heat_kernel_nox)
+(
+    double t,
+    size_t dim,
+    double terms
+)
 {
     double d = dim;
     double dm4 = d-4., dm2i2 = 2./(d-2.);
@@ -58,7 +71,7 @@ double L2SHM(heatkernel_nox)(double t, size_t dim, double terms)
 
     double p1 = 0., p2 = 1.;
     double ct = 1., cm = 1.;
-    double mult = L2SHM(power_int)(t, dim-1);
+    double mult = L2SHM(power_integer)(t, dim-1);
 
     for(double ind = 1.; ind < terms; ++ind)
     {
@@ -86,7 +99,12 @@ double L2SHM(heatkernel_nox)(double t, size_t dim, double terms)
     return out;
 }
 
-double L2SHM(heatkernel_dx)(double x, double t, size_t dim, double terms)
+double L2SHM(heat_kernel_dx)
+(
+    double x, double t,
+    size_t dim,
+    double terms
+)
 {
     double dm2 = dim-2.;
 
@@ -96,7 +114,7 @@ double L2SHM(heatkernel_dx)(double x, double t, size_t dim, double terms)
 
     double p1 = 0., p2 = 1.;
     double ct = 1., cm = dm2;
-    double mult = L2SHM(power_int)(t, dim-1);
+    double mult = L2SHM(power_integer)(t, dim-1);
 
     for(double ind = 1.; ind < terms; ++ind)
     {
@@ -124,7 +142,12 @@ double L2SHM(heatkernel_dx)(double x, double t, size_t dim, double terms)
     return out;
 }
 
-double L2SHM(heatkernel_dxx)(double x, double t, size_t dim, double terms)
+double L2SHM(heat_kernel_dxx)
+(
+    double x, double t,
+    size_t dim,
+    double terms
+)
 {
     double dt2 = 2.*dim;
     double dm2 = dim-2.;
@@ -135,7 +158,7 @@ double L2SHM(heatkernel_dxx)(double x, double t, size_t dim, double terms)
 
     double p1 = 0., p2 = 1.;
     double ct = 1., cm = dim*dm2;
-    double mult = L2SHM(power_int)(t, dim-1);
+    double mult = L2SHM(power_integer)(t, dim-1);
 
     for(double ind = 1; ind < terms; ++ind)
     {
@@ -165,7 +188,12 @@ double L2SHM(heatkernel_dxx)(double x, double t, size_t dim, double terms)
     return out;
 }
 
-double L2SHM(heatkernel_dt)(double x, double t, size_t dim, double terms)
+double L2SHM(heat_kernel_dt)
+(
+    double x, double t,
+    size_t dim,
+    double terms
+)
 {
     double dm4 = dim-4.;
     double dm2i12 = 12./(dim-2.);
@@ -176,7 +204,7 @@ double L2SHM(heatkernel_dt)(double x, double t, size_t dim, double terms)
     double p1 = 0., p2 = 1.;
     double ct = 1./t, cm = 0.;
     double add1 = 6., add2 = 2./(dim-2.)+dim+1.;
-    double mult = L2SHM(power_int)(t, dim-1);
+    double mult = L2SHM(power_integer)(t, dim-1);
 
     for(double ind = 1.; ind < terms; ++ind)
     {
@@ -209,10 +237,12 @@ double L2SHM(heatkernel_dt)(double x, double t, size_t dim, double terms)
     return out;
 }
 
-void L2SHM(heatkernel_combn_dxdt)
+void L2SHM(heat_kernel_combined_dxdt)
 (
-    double * out, double * out_dx, double * out_dt,
-    double x, double t, size_t dim, double terms
+    double *restrict out, double *restrict out_dx, double *restrict out_dt,
+    double x, double t,
+    size_t dim,
+    double terms
 )
 {
     double d = dim;
@@ -228,7 +258,7 @@ void L2SHM(heatkernel_combn_dxdt)
     double ct = 1., cm = 1., cd = 0.;
     double add = (d-1.)*ti;
 
-    double mult = L2SHM(power_int)(t, dim-1);
+    double mult = L2SHM(power_integer)(t, dim-1);
 
     for(double ind = 1.; ind < terms; ++ind)
     {
@@ -285,10 +315,12 @@ void L2SHM(heatkernel_combn_dxdt)
     return;
 }
 
-void L2SHM(heatkernel_combn_noxdt)
+void L2SHM(heat_kernel_nox_combined_dt)
 (
-    double * out, double * out_dt,
-    double t, size_t dim, double terms
+    double *restrict out, double *restrict out_dt,
+    double t,
+    size_t dim,
+    double terms
 )
 {
     double d = dim;
@@ -303,7 +335,7 @@ void L2SHM(heatkernel_combn_noxdt)
     double ct = 1., cm = 1., cd = 0.;
     double add = (d-1.)*ti;
 
-    double mult = L2SHM(power_int)(t, dim-1);
+    double mult = L2SHM(power_integer)(t, dim-1);
 
     for(double ind = 1.; ind < terms; ++ind)
     {
@@ -348,7 +380,12 @@ void L2SHM(heatkernel_combn_noxdt)
     return;
 }
 
-double L2SHM(heatkernel_test)(double x, double t, size_t dim, double terms)
+double L2SHM(heat_kernel_test)
+(
+    double x, double t,
+    size_t dim,
+    double terms
+)
 {
     double dm2 = dim-2.;
     double dm4 = dim-4.;
@@ -377,7 +414,12 @@ double L2SHM(heatkernel_test)(double x, double t, size_t dim, double terms)
     return out;
 }
 
-double L2SHM(heatkernel_dx_test)(double x, double t, size_t dim, double terms)
+double L2SHM(heat_kernel_dx_test)
+(
+    double x, double t,
+    size_t dim,
+    double terms
+)
 {
     double dm2 = dim-2.;
 
@@ -404,7 +446,12 @@ double L2SHM(heatkernel_dx_test)(double x, double t, size_t dim, double terms)
     return out;
 }
 
-double L2SHM(heatkernel_dxx_test)(double x, double t, size_t dim, double terms)
+double L2SHM(heat_kernel_dxx_test)
+(
+    double x, double t,
+    size_t dim,
+    double terms
+)
 {
     double dt2 = 2.*dim;
     double dm2 = dim-2.;
@@ -433,7 +480,12 @@ double L2SHM(heatkernel_dxx_test)(double x, double t, size_t dim, double terms)
     return out;
 }
 
-double L2SHM(heatkernel_dt_test)(double x, double t, size_t dim, double terms)
+double L2SHM(heat_kernel_dt_test)
+(
+    double x, double t,
+    size_t dim,
+    double terms
+)
 {
     double dm2 = dim-2.;
     double dm4 = dim-4.;
@@ -463,7 +515,10 @@ double L2SHM(heatkernel_dt_test)(double x, double t, size_t dim, double terms)
 }
 
 
-static inline double L2SHM(power_int)(double a, size_t power)
+static inline double L2SHM(power_integer)
+(
+    double a, size_t power
+)
 {
     double out = 1.;
     double a2k = a;

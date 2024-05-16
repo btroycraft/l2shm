@@ -4,10 +4,42 @@
 
 #include "l2shm.h"
 
-double L2SHM(T_trans)(double, double);
-double L2SHM(t_grad_trans)(double, double, double);
-void L2SHM(Alpha_trans)(double *restrict, size_t, double *restrict);
-void L2SHM(alpha_grad_trans)(double *restrict, size_t, double *restrict, double *restrict);
+
+double L2SHM(T_transform)
+(
+    double t,
+    double t_mult
+);
+
+double L2SHM(T_transform_nomult)
+(
+    double t
+);
+
+double L2SHM(t_gradient_transform)
+(
+    double t, double T_grad,
+    double t_mult
+);
+
+double L2SHM(t_gradient_transform_nomult)
+(
+    double t, double T_grad
+);
+
+void L2SHM(Alpha_transform)
+(
+    double *restrict Alpha,
+    size_t k,
+    double *restrict alpha
+);
+
+void L2SHM(alpha_gradient_transform)
+(
+    double *restrict alpha_grad,
+    size_t k,
+    double *restrict alpha
+);
 
 
 #endif // L2SHM_TRANS_H_
