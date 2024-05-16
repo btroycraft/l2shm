@@ -17,7 +17,7 @@ SEXP L2SHM_R(grad_desc_emp)
     SEXP U_sxp,
     SEXP T_min_sxp,
     SEXP mu_sxp, SEXP T_sxp, SEXP Alpha_sxp,
-    SEXP max_iter_sxp, SEXP terms_sxp
+    SEXP max_iter_sxp, SEXP tol_sxp, SEXP terms_sxp
 )
 {
     double * U = REAL(U_sxp);
@@ -33,6 +33,7 @@ SEXP L2SHM_R(grad_desc_emp)
 
     double terms = Rf_asReal(terms_sxp);
     int max_iter = Rf_asInteger(max_iter_sxp);
+    double tol = Rf_asReal(tol_sxp);
 
     double * alloc;
     {
@@ -45,7 +46,7 @@ SEXP L2SHM_R(grad_desc_emp)
     for(size_t ind = 0; ind < k; ++ind)
         T[ind] = exp(-T[ind]);
 
-    L2SHM(gradient_descent_empirical)(n, k, p, mu, T, Alpha, U, exp(-T_min), alloc, terms, max_iter);
+    L2SHM(gradient_descent_empirical)(n, k, p, mu, T, Alpha, U, exp(-T_min), alloc, terms, max_iter, tol);
 
     #pragma GCC ivdep
     for(size_t ind = 0; ind < k; ++ind)
@@ -67,7 +68,7 @@ SEXP L2SHM_R(grad_desc_proj)
 (
     SEXP mu0_sxp, SEXP T0_sxp, SEXP Alpha0_sxp,
     SEXP mu_sxp, SEXP T_sxp, SEXP Alpha_sxp,
-    SEXP max_iter_sxp, SEXP terms_sxp
+    SEXP max_iter_sxp, SEXP tol_sxp, SEXP terms_sxp
 )
 {
     double * mu0 = REAL(mu0_sxp);
@@ -83,6 +84,7 @@ SEXP L2SHM_R(grad_desc_proj)
 
     double terms = Rf_asReal(terms_sxp);
     int max_iter = Rf_asInteger(max_iter_sxp);
+    double tol = Rf_asReal(tol_sxp);
 
     double * alloc;
     {
@@ -101,7 +103,7 @@ SEXP L2SHM_R(grad_desc_proj)
     for(size_t ind = 0; ind < k; ++ind)
         T[ind] = exp(-T[ind]);
 
-    L2SHM(gradient_descent_projection)(n, k, k0, mu, T, Alpha, mu0, _T0, Alpha0, alloc, terms, max_iter);
+    L2SHM(gradient_descent_projection)(n, k, k0, mu, T, Alpha, mu0, _T0, Alpha0, alloc, terms, max_iter, tol);
 
     #pragma GCC ivdep
     for(size_t ind = 0; ind < k; ++ind)

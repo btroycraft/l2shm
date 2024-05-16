@@ -50,3 +50,4 @@ rsconnect/
 *.dll
 *.o
 .Rhistory
+*.layout

@@ -27,10 +27,10 @@ rand.par.list.proj <- function(par, groups)
     )
 }
 
-l2shm.gd.emp <- function(U, tmin, groups = 1L, par = rand.par.list.emp(U, groups, tmin), maxiter = 1L, terms = 50L){
-  invisible(.Call("_grad_desc_emp", PACKAGE="l2shm", U, tmin, par$mu, par$t, par$alpha, maxiter, terms))
+l2shm.gd.emp <- function(U, tmin, groups = 1L, par = rand.par.list.emp(U, groups, tmin), maxiter = 1L, tol = 10^-5, terms = 50L){
+  invisible(.Call("_grad_desc_emp", PACKAGE="l2shm", U, tmin, par$mu, par$t, par$alpha, maxiter, tol, terms))
 }
 
-l2shm.gd.proj <- function(par0, groups = 1L, par = rand.par.list.proj(par0, groups), maxiter = 1L, terms = 50L){
-  invisible(.Call("_grad_desc_proj", PACKAGE="l2shm", par0$mu, par0$t, par0$alpha, par$mu, par$t, par$alpha, maxiter, terms))
+l2shm.gd.proj <- function(par0, groups = 1L, par = rand.par.list.proj(par0, groups), maxiter = 1L, tol = 10^-5, terms = 50L){
+  invisible(.Call("_grad_desc_proj", PACKAGE="l2shm", par0$mu, par0$t, par0$alpha, par$mu, par$t, par$alpha, maxiter, tol, terms))
 }

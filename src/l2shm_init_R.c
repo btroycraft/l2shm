@@ -8,8 +8,8 @@
 
 
 static const R_CallMethodDef callMethods[] = {
-    {"_grad_desc_emp", (DL_FUNC) &L2SHM_R(grad_desc_emp), 7},
-    {"_grad_desc_proj", (DL_FUNC) &L2SHM_R(grad_desc_proj), 8},
+    {"_grad_desc_emp", (DL_FUNC) &L2SHM_R(grad_desc_emp), 8},
+    {"_grad_desc_proj", (DL_FUNC) &L2SHM_R(grad_desc_proj), 9},
     {"_obj_emp", (DL_FUNC) &L2SHM_R(obj_emp), 5},
     {"_obj_proj", (DL_FUNC) &L2SHM_R(obj_proj), 7},
     {"_nrm2_sq", (DL_FUNC) &L2SHM_R(nrm2_sq), 4},

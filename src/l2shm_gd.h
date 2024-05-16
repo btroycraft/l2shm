@@ -12,7 +12,7 @@ void L2SHM(gradient_descent_empirical)
     double *restrict U,
     double t_mult,
     double *restrict alloc,
-    double terms, size_t max_iter
+    double terms, size_t max_iter, double tol
 );
 
 void L2SHM(gradient_descent_projection)
@@ -21,7 +21,7 @@ void L2SHM(gradient_descent_projection)
     double *restrict mu, double *restrict T, double *restrict Alpha,
     double *restrict mu0, double *restrict T0, double *restrict Alpha0,
     double *restrict alloc,
-    double terms, size_t max_iter
+    double terms, size_t max_iter, double tol
 );
 
 #endif // L2SHM_GD_H_

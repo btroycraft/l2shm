@@ -58,7 +58,7 @@ static void L2SHM(update_group)
     double *restrict mu_temp,
     double t_mult, double terms
 );
-static void L2SHM(update_Alpha)
+static double L2SHM(update_Alpha)
 (
     size_t n, size_t k, size_t p,
     double *restrict mu, double *restrict T, double *restrict Alpha, double *restrict alpha,
@@ -76,7 +76,7 @@ void L2SHM(gradient_descent_empirical)
     double *restrict U,
     double t_mult,
     double *restrict alloc,
-    double terms, size_t max_iter
+    double terms, size_t max_iter, double tol
 )
 {
     double * t = alloc;
@@ -97,10 +97,19 @@ void L2SHM(gradient_descent_empirical)
     for(size_t ind = 0; ind < k; ++ind)
         alpha[ind] = sqrt(Alpha[ind]);
 
-    for(size_t iter = 0; iter < max_iter; ++iter){
+    double obj1;
+    {
         for(size_t index = 0; index < k; ++index)
             L2SHM(update_group)(index, n, k, p, mu, T, Alpha, t, U, mu_temp, t_mult, terms);
-        L2SHM(update_Alpha)(n, k, p, mu, T, Alpha, alpha, U, alpha_temp, vec, mat, terms);
+        obj1 = L2SHM(update_Alpha)(n, k, p, mu, T, Alpha, alpha, U, alpha_temp, vec, mat, terms);
+    }
+    for(size_t iter = 1; iter < max_iter; ++iter){
+        for(size_t index = 0; index < k; ++index)
+            L2SHM(update_group)(index, n, k, p, mu, T, Alpha, t, U, mu_temp, t_mult, terms);
+        double obj2 = L2SHM(update_Alpha)(n, k, p, mu, T, Alpha, alpha, U, alpha_temp, vec, mat, terms);
+        if(obj2-obj1 <= tol)
+            break;
+        obj1 = obj2;
     }
 
     return;
@@ -353,7 +362,7 @@ static void L2SHM(update_group)
     return;
 }
 
-static void L2SHM(update_Alpha)
+static double L2SHM(update_Alpha)
 (
     size_t n, size_t k, size_t p,
     double *restrict mu, double *restrict T, double *restrict Alpha, double *restrict alpha,
@@ -383,8 +392,9 @@ static void L2SHM(update_Alpha)
         L2SHM(Alpha_transform)(Alpha, k, alpha);
     }
 
+    double obj2;
     {
-        double obj2 = L2SHM(Alpha_objective)(k, Alpha, vec, mat);
+        obj2 = L2SHM(Alpha_objective)(k, Alpha, vec, mat);
 
         while(obj2 < obj1 + limit){
 
@@ -392,6 +402,7 @@ static void L2SHM(update_Alpha)
             if(limit <= DBL_EPSILON){
                 cblas_dcopy(k, alpha_temp, 1, alpha, 1);
                 L2SHM(Alpha_transform)(Alpha, k, alpha);
+                obj2 = obj1;
                 break;
             }
 
@@ -404,5 +415,5 @@ static void L2SHM(update_Alpha)
         }
     }
 
-    return;
+    return obj2;
 }
