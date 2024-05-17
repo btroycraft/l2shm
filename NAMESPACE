@@ -3,6 +3,8 @@ useDynLib(l2shm, .registration = TRUE)
 importFrom("stats", "rnorm")
 
 export(
+    l2shm.sgd.emp,
+    l2shm.sgd.proj,
     l2shm.gd.emp,
     l2shm.gd.proj,
     u.scores,
