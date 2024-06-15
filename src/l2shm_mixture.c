@@ -5,6 +5,37 @@
 #include "l2shm_mixture.h"
 #include "l2shm_heatkernel.h"
 
+void L2SHM(copy_parameters)
+(
+    double *restrict mu, double *restrict T, double *restrict Alpha,
+    size_t n, size_t k, size_t k0,
+    double *restrict mu0, double *restrict T0, double *restrict Alpha0
+)
+{
+    size_t k_min = k < k0 ? k : k0;
+
+    cblas_dcopy(n*k_min, mu0, 1, mu, 1);
+    cblas_dcopy(k_min, T0, 1, T, 1);
+    cblas_dcopy(k_min, Alpha0, 1, Alpha, 1);
+
+    {
+        double total = Alpha[0];
+        #pragma GCC ivdep
+        for(size_t ind = 1; ind < k_min; ++ind)
+            total += Alpha[ind];
+        cblas_dscal(k_min, 1./total, Alpha, 1);
+    }
+
+    cblas_dscal(k-k_min, 0., &Alpha[k_min], 1);
+
+    for(size_t ind = k_min; ind < k; ++ind){
+        size_t temp = L2SHM(random_integer)(k0-1);
+        cblas_dcopy(n, &mu0[temp*n], 1, &mu[ind*n], 1);
+        T[ind] = T0[temp];
+    }
+
+    return;
+}
 
 double L2SHM(objective_empirical)
 (

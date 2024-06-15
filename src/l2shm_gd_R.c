@@ -39,7 +39,10 @@ SEXP L2SHM_R(grad_desc_emp)
     {
         size_t length1 = 2*k + n;
         size_t length2 = 2*k + 2*k + k*(k+1)/2;
-        alloc = (double *) R_alloc(length2 >= length1 ? length2 : length1, sizeof(double));
+
+        size_t length_max = length2 > length1 ? length2 : length1;
+
+        alloc = (double *) R_alloc(length_max, sizeof(double));
     }
 
     #pragma GCC ivdep
@@ -90,7 +93,10 @@ SEXP L2SHM_R(grad_desc_proj)
     {
         size_t length1 = 2*k + n;
         size_t length2 = 2*k + 2*k + k*(k+1)/2;
-        alloc = (double *) R_alloc(length2 >= length1 ? length2 : length1, sizeof(double));
+
+        size_t length_max = length2 > length1 ? length2 : length1;
+
+        alloc = (double *) R_alloc(length_max, sizeof(double));
     }
 
     double * _T0 = (double *) R_alloc(k0, sizeof(double));

@@ -74,7 +74,7 @@ void L2SHM(gradient_descent_projection)
     size_t n, size_t k, size_t k0,
     double *restrict mu, double *restrict T, double *restrict Alpha,
     double *restrict mu0, double *restrict T0, double *restrict Alpha0,
-    double *restrict alloc,
+    double * alloc,
     double terms, size_t max_iter, double tol
 )
 {
@@ -134,7 +134,7 @@ static void L2SHM(group_combined_objective_gradient)
     {
         double _T = T0[0];
         double h, hx, ht;
-        L2SHM(heat_kernel_combined_dxdt)(&h, &hx, &ht, cblas_ddot(n, mu0, 1, mu_index, 1), _T*T_index, n, terms);
+        L2SHM(heat_kernel_combined_fdxdt)(&h, &hx, &ht, cblas_ddot(n, mu0, 1, mu_index, 1), _T*T_index, n, terms);
 
         double _Alpha = Alpha0[0];
         _obj = _Alpha*h;
@@ -149,7 +149,7 @@ static void L2SHM(group_combined_objective_gradient)
     for(size_t ind = 1; ind < k0; ++ind){
         double _T = T0[ind];
         double h, hx, ht;
-        L2SHM(heat_kernel_combined_dxdt)(&h, &hx, &ht, cblas_ddot(n, &mu0[ind*n], 1, mu_index, 1), _T*T_index, n, terms);
+        L2SHM(heat_kernel_combined_fdxdt)(&h, &hx, &ht, cblas_ddot(n, &mu0[ind*n], 1, mu_index, 1), _T*T_index, n, terms);
 
         double _Alpha = Alpha0[ind];
         _obj += _Alpha*h;
@@ -163,7 +163,7 @@ static void L2SHM(group_combined_objective_gradient)
     for(size_t ind = 0; ind < index; ++ind){
         double _T = T[ind];
         double h, hx, ht;
-        L2SHM(heat_kernel_combined_dxdt)(&h, &hx, &ht, cblas_ddot(n, &mu[ind*n], 1, mu_index, 1), _T*T_index, n, terms);
+        L2SHM(heat_kernel_combined_fdxdt)(&h, &hx, &ht, cblas_ddot(n, &mu[ind*n], 1, mu_index, 1), _T*T_index, n, terms);
 
         double _Alpha = Alpha[ind];
         _obj -= _Alpha*h;
@@ -173,7 +173,7 @@ static void L2SHM(group_combined_objective_gradient)
     for(size_t ind = index+1; ind < k; ++ind){
         double _T = T[ind];
         double h, hx, ht;
-        L2SHM(heat_kernel_combined_dxdt)(&h, &hx, &ht, cblas_ddot(n, &mu[ind*n], 1, mu_index, 1), _T*T_index, n, terms);
+        L2SHM(heat_kernel_combined_fdxdt)(&h, &hx, &ht, cblas_ddot(n, &mu[ind*n], 1, mu_index, 1), _T*T_index, n, terms);
 
         double _Alpha = Alpha[ind];
         _obj -= _Alpha*h;
@@ -185,7 +185,7 @@ static void L2SHM(group_combined_objective_gradient)
 
     {
         double h, ht;
-        L2SHM(heat_kernel_nox_combined_dt)(&h, &ht, T_index*T_index, n, terms);
+        L2SHM(heat_kernel_nox_combined_fdt)(&h, &ht, T_index*T_index, n, terms);
 
         double _Alpha = Alpha[index];
         _obj -= .5*_Alpha*h;

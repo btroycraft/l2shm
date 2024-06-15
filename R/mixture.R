@@ -1,3 +1,7 @@
+copy.par <- function(par, groups = ncol(par$mu)){
+    .Call("_copy_par", PACKAGE="l2shm", par$mu, par$t, par$alpha, groups)
+}
+
 l2shm.obj.emp <- function(par, U, terms = 30L){
     .Call("_obj_emp", PACKAGE="l2shm", par$mu, par$t, par$alpha, U, terms)
 }

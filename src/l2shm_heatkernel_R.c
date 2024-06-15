@@ -84,11 +84,11 @@ SEXP L2SHM_R(heat_kern_test)
     out1[1] = L2SHM(heat_kernel_dx)(1., exp(-Rf_asReal(t_sxp)), Rf_asInteger(dim_sxp), Rf_asReal(terms_sxp));
     out1[2] = L2SHM(heat_kernel_dt)(1., exp(-Rf_asReal(t_sxp)), Rf_asInteger(dim_sxp), Rf_asReal(terms_sxp));
 
-    L2SHM(heat_kernel_combined_dxdt)(&out2[0], &out2[1], &out2[2], 1., exp(-Rf_asReal(t_sxp)), Rf_asInteger(dim_sxp), Rf_asReal(terms_sxp));
+    L2SHM(heat_kernel_combined_fdxdt)(&out2[0], &out2[1], &out2[2], 1., exp(-Rf_asReal(t_sxp)), Rf_asInteger(dim_sxp), Rf_asReal(terms_sxp));
 
     out3[0] = L2SHM(heat_kernel_nox)(exp(-Rf_asReal(t_sxp)), Rf_asInteger(dim_sxp), Rf_asReal(terms_sxp));
 
-    L2SHM(heat_kernel_nox_combined_dt)(&out4[0], &out4[1], exp(-Rf_asReal(t_sxp)), Rf_asInteger(dim_sxp), Rf_asReal(terms_sxp));
+    L2SHM(heat_kernel_nox_combined_fdt)(&out4[0], &out4[1], exp(-Rf_asReal(t_sxp)), Rf_asInteger(dim_sxp), Rf_asReal(terms_sxp));
 
     UNPROTECT(5);
     return out_sxp;

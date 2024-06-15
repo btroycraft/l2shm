@@ -5,6 +5,12 @@
 #include "l2shm.h"
 
 
+void L2SHM(random_combination)
+(
+    size_t *restrict out,
+    size_t length, size_t max
+);
+
 void L2SHM(random_batch)
 (
     double *restrict U_batch,
@@ -13,10 +19,16 @@ void L2SHM(random_batch)
     size_t *restrict indices
 );
 
+void L2SHM(random_uniform_sphere)
+(
+    double *restrict out,
+    size_t dim
+);
+
 void L2SHM(random_heat_sphere)
 (
     double *restrict out,
-    size_t n,
+    size_t dim,
     double *restrict mu, double T,
     size_t res
 );
@@ -24,7 +36,7 @@ void L2SHM(random_heat_sphere)
 void L2SHM(random_heat_sphere_mixture)
 (
     double *restrict out,
-    size_t n, size_t k,
+    size_t dim, size_t k,
     double *restrict mu, double *restrict T, double *restrict Alpha,
     size_t res
 );

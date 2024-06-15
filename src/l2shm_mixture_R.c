@@ -12,6 +12,61 @@
 #include "l2shm_mixture.h"
 
 
+SEXP L2SHM_R(copy_par)
+(
+    SEXP mu_sxp, SEXP T_sxp, SEXP Alpha_sxp,
+    SEXP groups_sxp
+)
+{
+    double * mu = REAL(mu_sxp);
+    double * T = REAL(T_sxp);
+    double * Alpha = REAL(Alpha_sxp);
+
+    int n = Rf_nrows(mu_sxp);
+    int k = Rf_asInteger(groups_sxp);
+    int k0 = Rf_ncols(mu_sxp);
+
+    SEXP out_mu_sxp = PROTECT(Rf_allocMatrix(REALSXP, n, k));
+    SEXP out_T_sxp = PROTECT(Rf_allocVector(REALSXP, k));
+    SEXP out_Alpha_sxp = PROTECT(Rf_allocVector(REALSXP, k));
+
+    double * out_mu = REAL(out_mu_sxp);
+    double * out_T = REAL(out_T_sxp);
+    double * out_Alpha = REAL(out_Alpha_sxp);
+
+    L2SHM(copy_parameters)(out_mu, out_T, out_Alpha, n, k, k0, mu, T, Alpha);
+
+    const char *out_names[] = {"mu", "t", "alpha", ""};
+
+    SEXP out_sxp = PROTECT(Rf_mkNamed(VECSXP, out_names));
+
+    SET_VECTOR_ELT(out_sxp, 0, out_mu_sxp);
+    SET_VECTOR_ELT(out_sxp, 1, out_T_sxp);
+    SET_VECTOR_ELT(out_sxp, 2, out_Alpha_sxp);
+
+    UNPROTECT(4);
+    return out_sxp;
+}
+
+SEXP L2SHM_R(sort_par)
+(
+    SEXP mu_sxp, SEXP T_sxp, SEXP Alpha_sxp
+)
+{
+    const char *out_names[] = {"mu", "t", "alpha", ""};
+
+    SEXP out_sxp = PROTECT(Rf_mkNamed(VECSXP, out_names));
+
+
+
+    SET_VECTOR_ELT(out_sxp, 0, PROTECT(Rf_duplicate(mu_sxp)));
+    SET_VECTOR_ELT(out_sxp, 1, PROTECT(Rf_duplicate(T_sxp)));
+    SET_VECTOR_ELT(out_sxp, 2, PROTECT(Rf_duplicate(Alpha_sxp)));
+
+    UNPROTECT(4);
+    return out_sxp;
+}
+
 SEXP L2SHM_R(obj_emp)
 (
     SEXP mu_sxp, SEXP T_sxp, SEXP Alpha_sxp,

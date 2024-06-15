@@ -5,6 +5,12 @@
 #include "l2shm_R.h"
 
 
+SEXP L2SHM_R(copy_par)
+(
+    SEXP mu_sxp, SEXP T_sxp, SEXP Alpha_sxp,
+    SEXP groups_sxp
+);
+
 SEXP L2SHM_R(obj_emp)
 (
     SEXP mu_sxp, SEXP T_sxp, SEXP Alpha_sxp,

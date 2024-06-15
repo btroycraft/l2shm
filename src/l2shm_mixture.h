@@ -5,6 +5,13 @@
 #include "l2shm.h"
 
 
+void L2SHM(copy_parameters)
+(
+    double *restrict mu, double *restrict T, double *restrict Alpha,
+    size_t n, size_t k, size_t k0,
+    double *restrict mu0, double *restrict T0, double *restrict Alpha0
+);
+
 double L2SHM(objective_empirical)
 (
     size_t n, size_t k, size_t p,

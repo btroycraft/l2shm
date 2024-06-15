@@ -8,12 +8,16 @@
 
 
 static const R_CallMethodDef callMethods[] = {
+    {"_copy_par", (DL_FUNC) &L2SHM_R(copy_par), 4},
     {"_grad_desc_emp", (DL_FUNC) &L2SHM_R(grad_desc_emp), 8},
     {"_grad_desc_proj", (DL_FUNC) &L2SHM_R(grad_desc_proj), 9},
     {"_obj_emp", (DL_FUNC) &L2SHM_R(obj_emp), 5},
     {"_obj_proj", (DL_FUNC) &L2SHM_R(obj_proj), 7},
     {"_nrm2_sq", (DL_FUNC) &L2SHM_R(nrm2_sq), 4},
     {"_nrm2_sq_diff", (DL_FUNC) &L2SHM_R(nrm2_sq_diff), 7},
+    {"_rand_int", (DL_FUNC) &L2SHM_R(rand_int), 2},
+    {"_rand_combn", (DL_FUNC) &L2SHM_R(rand_combn), 3},
+    {"_rand_unif_sph", (DL_FUNC) &L2SHM_R(rand_unif_sph), 2},
     {"_rand_heat_sph", (DL_FUNC) &L2SHM_R(rand_heat_sph), 4},
     {"_rand_heat_sph_mix", (DL_FUNC) &L2SHM_R(rand_heat_sph_mix), 5},
     {"_heat_kern", (DL_FUNC) &L2SHM_R(heat_kern), 4},

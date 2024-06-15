@@ -7,72 +7,142 @@ U <- {
   u.scores(data)
 }
 
-groups <- 300
-tmin <- .05
-par <- list(
-  mu = unname(U[, sample(ncol(U), groups, replace=TRUE)]),
-  t = rep(tmin, groups),
-  alpha = rep(1/groups, groups)
-)
-l2shm.gd.emp(U, tmin, maxiter = 30, par=par, terms=90)
-l2.heat(U, par)
+par <- l2shm.gd.emp(U, .3^2, terms = 35L, maxiter = 10, groups = 100L, tol=-1)
+par <- l2shm.gd.emp(U, .15^2, terms = 35L, maxiter = 200, par = par, tol=-1)
 
-l2
-y <- heatkern.emp.gd(U, tmin = tmin, start = y, maxiter = 40)
+par_sub_list <- lapply(1:groups, function(groups_sub){
+  l2shm.gd.proj(par, groups = groups_sub, maxiter = 10^3)
+})
+nrm2 <- sapply(par_sub_list, function(par_sub){
+  l2shm.nrm2.sq.diff(par_sub, par, terms=50L)
+})
+nrm2 <- sapply(1:groups, function(ind) min(nrm2[1:ind]))
+nrm2[groups] <- 0
 
-y_max <- heatkern.emp.sgd(U, .02, 4, 10, maxiter = 10)
+library(ggplot2)
 
-for(._ in 1:3){
-  y <- heatkern.emp.sgd(U, tmin, maxiter = 30, start=y, batch = 100)
-  print(l2.heat(U, y)/2)
-  y <- heatkern.emp.gd(U, tmin, maxiter = 4, start=y)
-  print(l2.heat(U, y)/2)
-}
+t <- seq(0, 2, .001)
+l <- sapply(t, function(t){
+  min(which(nrm2<.41+t))
+})
+u <- sapply(t, function(t){
+  max(which(nrm2+.41>t))
+})
 
+plot(t, u, type='l')
+lines(t, l)
+qplot(t, u, t, l)
+qplot(t, l, add=TRUE)
 
+ggplot() +
+  geom_line(aes(x = t, y = l), col='red') +
+  geom_line(aes(x = t, y = u), col='blue') +
+  xlab(expression(epsilon)) +
+  ylab(expression(kappa(epsilon)))
 
-
-plot(seq(.1, 1, .01)[-1], heat.kern.dt(.9, seq(.1, 1, .01)[-1], 23, 200))
-lines(seq(.1, 1, .01)[-1], diff(heat.kern(.9, seq(.1, 1, .01), 23, 200))/diff(seq(.1, 1, .01)))
-
-
-t <- head(seq(0, 1, .01), -1)
-
-heat.kern.test(.1, 10, 100)
-.Call("_heat_kern_test", PACKAGE="l2shm", .1, 10, 100)
+t <- seq(-1, 1, .01); plot(t, heat.kern(t, .1^2, nrow(U), 35L), type='l')
 
 {
+  set.seed(5675867)
+
   groups0 <- 4
+  t0 <- .1^2
   par0 <- list(
-    mu = replicate(groups0, (._ <- rnorm(3))/sqrt(sum(._^2))),
-    t = rep(.01, groups0),
+    mu = runif.sph(groups0, 3),
+    t = rep(t0, groups0),
     alpha = local((._ <- runif(groups0))/sum(._))
   )
 
-  U <- rheat.sph.mix(10^3, par0)
-
   groups <- 50
-  tmin <- .005
+  tmin <- .05^2
+
+  library(parallel)
+  RNGkind("L'Ecuyer-CMRG")
+
+  set.seed(5417815)
+
+  CORES <- 6
+
+  reps <- unlist(mclapply(1:(ceiling(10^2/CORES)*CORES), function(ind){
+    runif(1)
+    U <- rheat.sph.mix(10^3, par0)
+    par <- l2shm.gd.emp(U, tmin, maxiter = 10^2, groups = groups, tol = 10^-7)
+    l2shm.nrm2.sq.diff(par, par0)
+  }, mc.cores = CORES))
+
+  reps_boot_list <- replicate(10, {
+    U <- rheat.sph.mix(10^3, par0)
+    par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7)
+    par_sub <- {
+      par_sub_list <- lapply(1:groups, function(groups_sub){
+        l2shm.gd.proj(par, groups = groups_sub, maxiter = 10^3)
+      })
+      par_sub_list[[groups]] <- copy.par(par)
+      nrm2 <- sapply(par_sub_list, function(par_sub){
+        l2shm.nrm2.sq.diff(par_sub, par, terms=50L)
+      })
+      nrm2[groups] <- 0;
+      par_sub_list[[min(which(nrm2 <= 44/ncol(U)^.7))]]
+    }
+    unlist(mclapply(1:(ceiling(10^2/CORES)*CORES), function(._){
+      runif(1)
+      U_boot <- rheat.sph.mix(ncol(U), par_sub)
+      par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^3, groups = groups, tol = 10^-7)
+      l2shm.nrm2.sq.diff(par_boot, par_sub)
+    }, mc.cores = CORES))
+  }, simplify = FALSE)
 
 
-  par <- l2shm.gd.emp(U, tmin, maxiter = 1, groups = groups)
-  l2shm.gd.emp(U, tmin, maxiter = 10, groups = groups, par=par)
-  l2shm.obj.emp(par, U)
+  plot.new()
+  plot(c(), xlim=c(0, 1), ylim=c(0, 1), xlab='Nominal', ylab='Actual')
+  segments(0, 0, 1, 1)
 
-  l2shm.nrm2.sq(par0)
-  l2shm.nrm2.sq.diff(par0, par)
+  t <- seq(0, 1, .001)
+  for(reps_boot in reps_boot_list){
+    lines(t, cdf(reps)(icdf(reps_boot)(t)), xlim=c(0, 1), ylim=c(0, 1))
+  }
 
-  par_sub <- l2shm.gd.proj(par, maxiter = 1000, groups = 5)
-  l2shm.gd.proj(par, maxiter = 1000, par = par_sub)
-  l2shm.obj.proj(par_sub, par)
-  l2shm.nrm2.sq.diff(par_sub, par0)
+  plot(t, cdf(reps)(t), ylim=c(0, 1), xlim=c(0, 1), type='l'); lines(t, cdf(reps_boot)(t))
+
+  cdf <- function(x){
+    x <- sort(x)
+    function(y) sapply(y, function(y){
+      if(y <= x[1]){
+        0
+      } else if(y >= x[length(x)]) {
+        1
+      } else {
+        i_low <- max(which(y >= x))
+        i_upp <- min(which(y <= x))
+        (i_low + (y-x[i_low])/(x[i_upp]-x[i_low]) - 1) / (length(x)-1)
+      }
+    })
+  }
+
+  icdf <- function(x){
+    x <- sort(x)
+    function(y) sapply(y, function(y){
+      if(y == 0){
+        x[1]
+      } else if(y == 1){
+        x[length(x)]
+      } else {
+        i_low = floor(y*(length(x)-1))
+        x[i_low+1] + (y*(length(x)-1)-i_low)*(x[i_low+2]-x[i_low+1])
+      }
+    })
+  }
+
+  t <- seq(0, 1, length.out=1000)
+  plot(t, cdf(reps)(icdf(reps_boot)(t)), xlim=c(0, 1), ylim=c(0, 1), type='l', asp=1)
+  abline(0, 1)
 
   library(plotly)
   U <- rheat.sph.mix(10^3, par0)
   plot_ly() %>%
     add_trace(x = U[1, ], y = U[2, ], z = U[3, ], mode = "markers", marker=list(size=2)) %>%
-    add_trace(x = 1.1*par$mu[1, ], y = 1.1*par$mu[2, ], z = 1.1*par$mu[3, ], mode = "markers", color=par$alpha) %>%
-    add_trace(x = 1.2*par_sub$mu[1, ], y = 1.2*par_sub$mu[2, ], z = 1.2*par_sub$mu[3, ], mode = "markers", color=par_sub$alpha)
+    add_trace(x = 1.1*par$mu[1, ], y = 1.1*par$mu[2, ], z = 1.1*par$mu[3, ], mode = "markers", color=par$alpha) #%>%
+    #add_trace(x = 1.2*par_sub$mu[1, ], y = 1.2*par_sub$mu[2, ], z = 1.2*par_sub$mu[3, ], mode = "markers", color=par_sub$alpha)
 
   U_boot <- rheat.sph.mix(10^3, par)
 

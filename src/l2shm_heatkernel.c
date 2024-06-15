@@ -237,7 +237,129 @@ double L2SHM(heat_kernel_dt)
     return out;
 }
 
+double L2SHM(heat_kernel_nox_dt)
+(
+    double t,
+    size_t dim,
+    double terms
+)
+{
+    double dm4 = dim-4.;
+    double dm2i12 = 12./(dim-2.);
+    double t2 = t*t;
+
+    double out = 0.;
+
+    double p1 = 0., p2 = 1.;
+    double ct = 1./t, cm = 0.;
+    double add1 = 6., add2 = 2./(dim-2.)+dim+1.;
+    double mult = L2SHM(power_integer)(t, dim-1);
+
+    for(double ind = 1.; ind < terms; ++ind)
+    {
+        ct *= mult;
+        cm += add2;
+        p1 += (dm4/ind+2.)*(p2-p1);
+
+        out += ct*cm*p1;
+
+        add1 += dm2i12;
+        add2 += add1;
+        mult *= t2;
+
+        ++ind;
+
+        if(ind >= terms)
+            break;
+
+        ct *= mult;
+        cm += add2;
+        p2 += (dm4/ind+2.)*(p1-p2);
+
+        out += ct*cm*p2;
+
+        add1 += dm2i12;
+        add2 += add1;
+        mult *= t2;
+    }
+
+    return out;
+}
+
 void L2SHM(heat_kernel_combined_dxdt)
+(
+    double *restrict out_dx, double *restrict out_dt,
+    double x, double t,
+    size_t dim,
+    double terms
+)
+{
+    double d = dim;
+    double dm2 = d-2., dm4 = d-4.;
+    double dm2i2 = 2./dm2;
+
+    double t2 = t*t, ti = 1./t;
+    double ti2 = 2.*ti;
+
+    double _out_dx = 0., _out_dt = 0.;
+
+    double p11 = 0., p12 = 1., p21 = 0., p22 = 1.;
+    double ct = 1., cm = 1., cd = 0.;
+    double add = (d-1.)*ti;
+
+    double mult = L2SHM(power_integer)(t, dim-1);
+
+    for(double ind = 1.; ind < terms; ++ind)
+    {
+        ct *= mult;
+        cm += dm2i2;
+        cd += add;
+
+        {
+            double temp = 1./ind;
+            p11 += (dm4*temp+2.)*(p12*x-p11);
+            p21 += (dm2*temp+2.)*(p22*x-p21);
+        }
+        {
+            double temp1 = ct*cm;
+            _out_dx += temp1*p22;
+            _out_dt += cd*temp1*p11;
+        }
+
+        add += ti2;
+        mult *= t2;
+        ++ind;
+
+        if(ind >= terms)
+            break;
+
+        ct *= mult;
+        cm += dm2i2;
+        cd += add;
+
+        {
+            double temp = 1./ind;
+            p12 += (dm4*temp+2.)*(p11*x-p12);
+            p22 += (dm2*temp+2.)*(p21*x-p22);
+        }
+        {
+            double temp1 = ct*cm;
+            _out_dx += temp1*p21;
+            _out_dt += cd*temp1*p12;
+        }
+
+        add += ti2;
+        mult *= t2;
+    }
+    _out_dx *= dm2;
+
+    *out_dx = _out_dx;
+    *out_dt = _out_dt;
+
+    return;
+}
+
+void L2SHM(heat_kernel_combined_fdxdt)
 (
     double *restrict out, double *restrict out_dx, double *restrict out_dt,
     double x, double t,
@@ -315,7 +437,7 @@ void L2SHM(heat_kernel_combined_dxdt)
     return;
 }
 
-void L2SHM(heat_kernel_nox_combined_dt)
+void L2SHM(heat_kernel_nox_combined_fdt)
 (
     double *restrict out, double *restrict out_dt,
     double t,
