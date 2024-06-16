@@ -51,3 +51,4 @@ rsconnect/
 *.o
 .Rhistory
 *.layout
+*.RData
