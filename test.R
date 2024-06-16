@@ -63,12 +63,14 @@ t <- seq(-1, 1, .01); plot(t, heat.kern(t, .1^2, nrow(U), 35L), type='l')
 
   CORES <- 6
 
-  reps <- unlist(mclapply(1:(ceiling(10^2/CORES)*CORES), function(ind){
+  setDefaultCluster(makeCluster(CORES))
+
+  reps <- unlist(parLapply(1:(ceiling(10^2/CORES)*CORES), function(ind){
     runif(1)
     U <- rheat.sph.mix(10^3, par0)
     par <- l2shm.gd.emp(U, tmin, maxiter = 10^2, groups = groups, tol = 10^-7)
     l2shm.nrm2.sq.diff(par, par0)
-  }, mc.cores = CORES))
+  }, cl = getDefaultCluster()))
 
   reps_boot_list <- replicate(10, {
     U <- rheat.sph.mix(10^3, par0)
@@ -84,14 +86,15 @@ t <- seq(-1, 1, .01); plot(t, heat.kern(t, .1^2, nrow(U), 35L), type='l')
       nrm2[groups] <- 0;
       par_sub_list[[min(which(nrm2 <= 44/ncol(U)^.7))]]
     }
-    unlist(mclapply(1:(ceiling(10^2/CORES)*CORES), function(._){
+    unlist(parLapply(1:(ceiling(10^2/CORES)*CORES), function(._){
       runif(1)
       U_boot <- rheat.sph.mix(ncol(U), par_sub)
       par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^3, groups = groups, tol = 10^-7)
       l2shm.nrm2.sq.diff(par_boot, par_sub)
-    }, mc.cores = CORES))
+    }, cl = getDefaultCluster()))
   }, simplify = FALSE)
 
+  stopCluster(getDefaultCluster())
 
   plot.new()
   plot(c(), xlim=c(0, 1), ylim=c(0, 1), xlab='Nominal', ylab='Actual')

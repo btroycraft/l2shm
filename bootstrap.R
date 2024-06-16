@@ -36,6 +36,8 @@ set.seed(5675867)
 
 CORES <- 6
 
+setDefaultCluster(makeCluster(CORES))
+
 groups0 <- 4
 t0 <- .1^2
 par0 <- list(
@@ -48,12 +50,14 @@ groups <- 50
 tmin <- .05^2
 
 
-reps <- unlist(mclapply(1:(ceiling(10^2/CORES)*CORES), function(ind){
+reps <- unlist(parLapply(1:(ceiling(10^2/CORES)*CORES), function(ind){
   runif(1)
   U <- rheat.sph.mix(10^3, par0)
   par <- l2shm.gd.emp(U, tmin, maxiter = 10^2, groups = groups, tol = 10^-7)
   l2shm.nrm2.sq.diff(par, par0)
-}, mc.cores = CORES))
+}, cl = getDefaultCluster()))
+
+
 
 reps_boot_list <- replicate(10, {
   U <- rheat.sph.mix(10^3, par0)
@@ -69,28 +73,31 @@ reps_boot_list <- replicate(10, {
     nrm2[groups] <- 0;
     par_sub_list[[min(which(nrm2 <= 44/ncol(U)^.7))]]
   }
-  unlist(mclapply(1:(ceiling(3*10^2/CORES)*CORES), function(._){
+  unlist(parLapply(1:(ceiling(3*10^2/CORES)*CORES), function(._){
     runif(1)
     U_boot <- rheat.sph.mix(ncol(U), par_sub)
     par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^2, groups = groups, tol = 10^-7)
     l2shm.nrm2.sq.diff(par_boot, par_sub)
-  }, mc.cores = CORES))
+  }, cl = getDefaultCluster()))
 }, simplify = FALSE)
 
-{
-  plot.new()
-  plot(c(),
-       xlim = c(0, 1),
-       ylim = c(0, 1),
-       xlab='Nominal',
-       ylab='Actual'
-  )
-  segments(0, 0, 1, 1)
+library(ggplot2)
 
-  t <- seq(0, 1, .001)
-  for(reps_boot in reps_boot_list){
-    lines(t, cdf(reps)(icdf(reps_boot)(t)), xlim=c(0, 1), ylim=c(0, 1))
-  }
+{
+  data <- do.call(rbind, lapply(seq_along(reps_boot_list), function(ind){
+    data.frame(
+      nominal = t,
+      actual = cdf(reps)(icdf(reps_boot_list[[ind]])(t)),
+      run = ind
+    )
+  }))
+
+  plot1 <- ggplot(data = data) +
+    geom_abline(intercept = 0, slope = 1, size = 1) +
+    geom_line(aes(x = nominal, y = actual, group = run), col = "darkblue", size = .5)
+
+  ggsave("bootstrap1.png", plot1, scale = 1, width = 3, height = 2, units = "in")
+
 }
 
 save(reps, reps_boot_list, file = "save.RData")
