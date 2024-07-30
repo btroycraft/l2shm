@@ -10,7 +10,7 @@ l2shm.obj.proj <- function(par, par0, terms = 30L){
     .Call("_obj_proj", PACKAGE="l2shm", par$mu, par$t, par$alpha, par0$mu, par0$t, par0$alpha, terms)
 }
 
-l2shm.nrm2.sq <- function(par, par0, terms = 30L){
+l2shm.nrm2.sq <- function(par, terms = 30L){
     .Call("_nrm2_sq", PACKAGE="l2shm", par$mu, par$t, par$alpha, terms)
 }
 

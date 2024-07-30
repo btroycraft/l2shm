@@ -52,3 +52,4 @@ rsconnect/
 .Rhistory
 *.layout
 *.RData
+*.png

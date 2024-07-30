@@ -23,14 +23,17 @@ library(ggplot2)
 
 t <- seq(0, 2, .001)
 l <- sapply(t, function(t){
-  min(which(nrm2<.41+t))
+  min(which(nrm2-.1 <= t))-1
 })
 u <- sapply(t, function(t){
-  max(which(nrm2+.41>t))
+  max(which(nrm2+.1 >= t))
 })
 
-plot(t, u, type='l')
-lines(t, l)
+plot(t, u, col="blue", pch=".")
+points(t, l, col="red", pch=".")
+abline(v = nrm2+.1)
+
+lines(t, c)
 qplot(t, u, t, l)
 qplot(t, l, add=TRUE)
 

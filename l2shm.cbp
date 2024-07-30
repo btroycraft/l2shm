@@ -48,6 +48,7 @@
 		<Unit filename="R/mixture.R" />
 		<Unit filename="R/random.R" />
 		<Unit filename="R/uscores.R" />
+		<Unit filename="bootstrap.R" />
 		<Unit filename="man/hello.Rd" />
 		<Unit filename="src/Makevars" />
 		<Unit filename="src/l2shm.h" />
@@ -96,6 +97,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/l2shm_trans.h" />
+		<Unit filename="src/new/l2shm_cdf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/new/l2shm_cdf.h" />
+		<Unit filename="src/new/l2shm_cdf_R.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/new/l2shm_cdf_R.h" />
 		<Unit filename="test.R" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
