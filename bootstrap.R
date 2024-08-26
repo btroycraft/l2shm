@@ -122,7 +122,7 @@ reps_cov_k4_p1000 <- unlist(parLapply(1:(ceiling(10^3/CORES)*CORES), function(in
 
 save(reps_cov_k4_p1000, file = "reps_cov_k4_p1000.RData")
 
-reps_cov_k4_p10000 <- unlist(parLapply(1:(ceiling(10^3/CORES)*CORES), function(ind){
+reps_cov_k4_p10000 <- unlist(parLapply(1:(ceiling(10^2/CORES)*CORES), function(ind){
   runif(1)
   U <- rheat.sph.mix(10^4, par0)
   par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7, terms = 100L)
@@ -171,12 +171,12 @@ save(reps_nrm_k4_p10000, file = "reps_nrm_k4_p10000.RData")
 
 reps_boot_list_k4_p1000 <- replicate(10, {
   U <- rheat.sph.mix(10^3, par0)
-  par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7)
+  par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7, terms = 100L)
   clusterExport(getDefaultCluster(), c("U", "par"), envir = environment())
-  unlist(parLapply(1:(ceiling(3*10^2/CORES)*CORES), function(._){
+  unlist(parLapply(1:(ceiling(10^2/CORES)*CORES), function(._){
     runif(1)
     U_boot <- rheat.sph.mix(ncol(U), par)
-    par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^2, groups = groups, tol = 10^-7)
+    par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^2, groups = groups, tol = 10^-7, terms = 100L)
     sqrt(l2shm.nrm2.sq.diff(par_boot, par))
   }, cl = getDefaultCluster()))
 }, simplify = FALSE)
@@ -185,12 +185,12 @@ save(reps_boot_list_k4_p1000, file = "reps_boot_list_k4_p1000.RData")
 
 reps_boot_list_k4_p10000 <- replicate(10, {
   U <- rheat.sph.mix(10^4, par0)
-  par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7)
+  par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7, terms = 100L)
   clusterExport(getDefaultCluster(), c("U", "par"), envir = environment())
-  unlist(parLapply(1:(ceiling(3*10^2/CORES)*CORES), function(._){
+  unlist(parLapply(1:(ceiling(10^2/CORES)*CORES), function(._){
     runif(1)
     U_boot <- rheat.sph.mix(ncol(U), par)
-    par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^2, groups = groups, tol = 10^-7)
+    par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^2, groups = groups, tol = 10^-7, terms = 100L)
     sqrt(l2shm.nrm2.sq.diff(par_boot, par))
   }, cl = getDefaultCluster()))
 }, simplify = FALSE)
@@ -200,7 +200,7 @@ save(reps_boot_list_k4_p10000, file = "reps_boot_list_k4_p10000.RData")
 
 reps_boot_list_k4_p1000_trans <- replicate(10, {
   U <- rheat.sph.mix(10^3, par0)
-  par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7)
+  par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7, terms = 100L)
   par_sub <- {
     par_sub_list <- lapply(1:groups, function(groups_sub){
       l2shm.gd.proj(par, groups = groups_sub, maxiter = 10^3)
@@ -213,10 +213,10 @@ reps_boot_list_k4_p1000_trans <- replicate(10, {
     par_sub_list[[sum(nrm2 > 44/ncol(U)^.7)+1]]
   }
   clusterExport(getDefaultCluster(), c("U", "par_sub"), envir = environment())
-  unlist(parLapply(1:(ceiling(3*10^2/CORES)*CORES), function(._){
+  unlist(parLapply(1:(ceiling(10^2/CORES)*CORES), function(._){
     runif(1)
     U_boot <- rheat.sph.mix(ncol(U), par_sub)
-    par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^2, groups = groups, tol = 10^-7)
+    par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^2, groups = groups, tol = 10^-7, terms = 100L)
     sqrt(l2shm.nrm2.sq.diff(par_boot, par_sub))
   }, cl = getDefaultCluster()))
 }, simplify = FALSE)
@@ -225,7 +225,7 @@ save(reps_boot_list_k4_p1000_trans, file = "reps_boot_list_k4_p1000_trans.RData"
 
 reps_boot_list_k4_p10000_trans <- replicate(10, {
   U <- rheat.sph.mix(10^4, par0)
-  par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7)
+  par <- l2shm.gd.emp(U, tmin, maxiter = 10^3, groups = groups, tol = 10^-7, terms = 100L)
   par_sub <- {
     par_sub_list <- lapply(1:groups, function(groups_sub){
       l2shm.gd.proj(par, groups = groups_sub, maxiter = 10^3)
@@ -238,10 +238,10 @@ reps_boot_list_k4_p10000_trans <- replicate(10, {
     par_sub_list[[sum(nrm2 > 44/ncol(U)^.7)+1]]
   }
   clusterExport(getDefaultCluster(), c("U", "par_sub"), envir = environment())
-  unlist(parLapply(1:(ceiling(3*10^2/CORES)*CORES), function(._){
+  unlist(parLapply(1:(ceiling(10^2/CORES)*CORES), function(._){
     runif(1)
     U_boot <- rheat.sph.mix(ncol(U), par_sub)
-    par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^2, groups = groups, tol = 10^-7)
+    par_boot <- l2shm.gd.emp(U_boot, tmin, maxiter = 10^2, groups = groups, tol = 10^-7, terms = 100L)
     sqrt(l2shm.nrm2.sq.diff(par_boot, par_sub))
   }, cl = getDefaultCluster()))
 }, simplify = FALSE)
@@ -327,11 +327,44 @@ load("reps_boot_list_k4_p10000.RData")
   )
 
   plot_boot1 <- ggplot(data = data) +
-    #geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "darkblue", linewidth = .4) +
+    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "darkblue", linewidth = .4) +
     geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "darkred", linewidth = .4) +
     geom_segment(x = 0, y = 0, xend = 1, yend = 1)
 
-  ggsave("bootstrap1.png", plot_boot1, scale = 1, width = 3, height = 2, units = "in")
+  ggsave("bootstrap.png", plot_boot1, scale = 1, width = 3, height = 2, units = "in")
+}
+
+load("reps_boot_list_k4_p1000_trans.RData")
+load("reps_boot_list_k4_p10000_trans.RData")
+
+{
+  t <- seq(0, 1, .01)
+
+  data <- rbind(
+    do.call(rbind, lapply(seq_along(reps_boot_list_k4_p1000_trans), function(ind){
+      data.frame(
+        nominal = t,
+        actual = cdf(reps_nrm_k4_p1000)(icdf(reps_boot_list_k4_p1000_trans[[ind]])(t)),
+        p = 1000,
+        run = ind
+      )
+    })),
+    do.call(rbind, lapply(seq_along(reps_boot_list_k4_p10000_trans), function(ind){
+      data.frame(
+        nominal = t,
+        actual = cdf(reps_nrm_k4_p10000)(icdf(reps_boot_list_k4_p10000_trans[[ind]])(t)),
+        p = 10000,
+        run = ind
+      )
+    }))
+  )
+
+  plot_boot2 <- ggplot(data = data) +
+    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "darkblue", linewidth = .4) +
+    geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "darkred", linewidth = .4) +
+    geom_segment(x = 0, y = 0, xend = 1, yend = 1)
+
+  ggsave("bootstrap_trans.png", plot_boot2, scale = 1, width = 3, height = 2, units = "in")
 }
 
 load("reps_boot_list2.RData")
