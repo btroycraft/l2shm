@@ -1,6 +1,8 @@
 #ifndef L2SHM_RANDOM_R_H_
 #define L2SHM_RANDOM_R_H_
 
+#include <R.h>
+#include <Rinternals.h>
 
 #include "l2shm_R.h"
 

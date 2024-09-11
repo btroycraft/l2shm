@@ -2,6 +2,8 @@
 #define L2SHM_MIXTURE_H_
 
 
+#include <stdlib.h>
+
 #include "l2shm.h"
 
 

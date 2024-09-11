@@ -11,6 +11,11 @@ void L2SHM(random_combination)
     size_t length, size_t max
 );
 
+size_t L2SHM(random_integer)
+(
+    size_t max
+);
+
 void L2SHM(random_batch)
 (
     double *restrict U_batch,

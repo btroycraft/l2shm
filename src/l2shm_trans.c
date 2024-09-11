@@ -1,5 +1,5 @@
 #include <cblas.h>
-
+#include <stdlib.h>
 
 #include "l2shm.h"
 #include "l2shm_trans.h"
