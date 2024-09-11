@@ -256,7 +256,6 @@ load("reps_cov_k4_p1000.RData")
 load("reps_cov_k4_p10000.RData")
 
 {
-  library(cobs)
   t <- seq(0, 1, .001)
 
   data <- rbind(
@@ -276,7 +275,7 @@ load("reps_cov_k4_p10000.RData")
   data$actual[data$nominal == 1] <- 1
   data$actual <- pmax(data$nominal, data$actual)
 
-
+  # library(cobs)
   # is <- interpSplineCon(conreg(data$nominal[data$p == 1000], data$actual[data$p == 1000], maxit=c(1000, 100)))
   # data$actual[data$p == 1000] <- predict(is, data$nominal[data$p == 1000])$y
   # data$actual[data$nominal == 0] <- 0
@@ -288,15 +287,15 @@ load("reps_cov_k4_p10000.RData")
   # data$actual[data$nominal == 1] <- 1
 
   plot2 <- ggplot(data = data) +
-    geom_segment(x = 0, y = 0, xend = 1, yend = 1, linewidth = 1) +
-    geom_line(aes(x = nominal, y = actual, col = p), linewidth = .8)+
-    scale_color_hue(l=50)
-
+    geom_segment(x = 0, y = 0, xend = 1, yend = 1) +
+    geom_line(aes(x = nominal, y = actual, col = p), linewidth = .8) +
+    scale_color_hue(l = 50) +
+    coord_cartesian(xlim = c(0, 1), ylim = c(0, 1))
   plot2_zoom <- ggplot(data = data) +
-    geom_abline(intercept = 0, slope = 1, linewidth = 1) +
-    geom_line(aes(x = nominal, y = actual, col = p), linewidth = .8)+
-    scale_color_hue(l=50) +
-    coord_cartesian(xlim=c(.9, 1), ylim = c(.9, 1))
+    geom_segment(x = 0, y = 0, xend = 1, yend = 1) +
+    geom_line(aes(x = nominal, y = actual, col = p), linewidth = .8) +
+    scale_color_hue(l = 50) +
+    coord_cartesian(xlim = c(.9, 1), ylim = c(.9, 1))
 
   ggsave("quantiles1.png", plot2, scale = 1.3, width = 3, height = 2, units = "in")
   ggsave("quantiles1_zoom.png", plot2_zoom, scale = 1.3, width = 3, height = 2, units = "in")
@@ -328,17 +327,18 @@ load("reps_boot_list_k4_p10000.RData")
   )
 
   plot_boot1 <- ggplot(data = data) +
-    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "darkblue", linewidth = .4) +
-    geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "darkred", linewidth = .4) +
-    eom_abline(intercept = 0, slope = 1)
+    geom_segment(x = 0, y = 0, xend = 1, yend = 1) +
+    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "blue", linewidth = .4) +
+    geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "red", linewidth = .4)
   plot_boot1_zoom <- ggplot(data = data) +
-    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "darkblue", linewidth = .4) +
-    geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "darkred", linewidth = .4) +
-    geom_abline(intercept = 0, slope = 1) +
+    geom_segment(x = 0, y = 0, xend = 1, yend = 1) +
+    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "blue", linewidth = .4) +
+    geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "red", linewidth = .4) +
     coord_cartesian(xlim = c(.9, 1), ylim = c(.7, 1))
 
 
   ggsave("bootstrap.png", plot_boot1, scale = 1, width = 3, height = 2, units = "in")
+  ggsave("bootstrap_zoom.png", plot_boot1_zoom, scale = 1, width = 3, height = 2, units = "in")
 }
 
 load("reps_boot_list_k4_p1000_trans.RData")
@@ -367,35 +367,16 @@ load("reps_boot_list_k4_p10000_trans.RData")
   )
 
   plot_boot2 <- ggplot(data = data) +
-    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "darkblue", linewidth = .4) +
-    geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "darkred", linewidth = .4) +
-    geom_abline(intercept = 0, slope = 1)
+    geom_segment(x = 0, y = 0, xend = 1, yend = 1) +
+    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "blue", linewidth = .4) +
+    geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "red", linewidth = .4) +
+    coord_cartesian(xlim = c(0, 1), ylim = c(0, 1))
   plot_boot2_zoom <- ggplot(data = data) +
-    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "darkblue", linewidth = .4) +
-    geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "darkred", linewidth = .4) +
-    geom_abline(intercept = 0, slope = 1) +
+    geom_segment(x = 0, y = 0, xend = 1, yend = 1) +
+    geom_line(data = subset(data, p == 1000), aes(x = nominal, y = actual, group = run), col = "blue", linewidth = .4) +
+    geom_line(data = subset(data, p == 10000), aes(x = nominal, y = actual, group = run), col = "red", linewidth = .4) +
     coord_cartesian(xlim = c(.9, 1), ylim = c(.7, 1))
 
   ggsave("bootstrap_trans.png", plot_boot2, scale = 1, width = 3, height = 2, units = "in")
   ggsave("bootstrap_trans_zoom.png", plot_boot2_zoom, scale = 1, width = 3, height = 2, units = "in")
-}
-
-load("reps_boot_list2.RData")
-
-{
-  t <- seq(0, 1, .01)
-
-  data <- do.call(rbind, lapply(seq_along(reps_boot_list2), function(ind){
-    data.frame(
-      nominal = t,
-      actual = cdf(reps)(icdf(reps_boot_list2[[ind]])(t)),
-      run = ind
-    )
-  }))
-
-  plot_boot2 <- ggplot(data = data) +
-    geom_line(aes(x = nominal, y = actual, group = run), col = "darkred", linewidth = .4) +
-    geom_segment(x = 0, y = 0, xend = 1, yend = 1)
-
-  ggsave("bootstrap2.png", plot_boot2, scale = 1, width = 3, height = 2, units = "in")
 }
