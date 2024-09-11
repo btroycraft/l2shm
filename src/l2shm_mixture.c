@@ -4,6 +4,8 @@
 #include "l2shm.h"
 #include "l2shm_mixture.h"
 #include "l2shm_heatkernel.h"
+#include "l2shm_random.h"
+#include "l2shm_random_R.h"
 
 void L2SHM(copy_parameters)
 (

@@ -53,3 +53,5 @@ rsconnect/
 *.layout
 *.RData
 *.png
+.DS_Store
+*.so
